@@ -3,7 +3,13 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Category extends Model {}
+  class Category extends Model {
+    static associate(models) {
+      Category.hasMany(models.Menu_items, {
+        foreignKey: 'category_id'
+      });
+    }
+  }
   Category.init({
     title: {
       type: DataTypes.STRING,
@@ -15,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     }
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       validate: {
         notNull: {
