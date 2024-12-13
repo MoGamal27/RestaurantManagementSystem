@@ -6,7 +6,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       User.hasMany(models.orders, {
         foreignKey: 'user_id',
-      });
+      })
+      User.hasMany(models.Token, {
+        foreignKey: 'user_id'
+      })
   }
   }
 
