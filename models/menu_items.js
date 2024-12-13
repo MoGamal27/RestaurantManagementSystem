@@ -7,7 +7,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Menu_items.belongsTo(models.Category, {
         foreignKey: 'category_id'
-      });
+      })
+      Menu_items.hasMany(models.order_items, {
+        foreignKey: 'menu_item_id'
+      })
     }
   }
   Menu_items.init({
