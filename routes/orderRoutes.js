@@ -1,4 +1,4 @@
-const { createOrder, getAllOrders, getOrder, updateOrder, deleteOrder, completeOrder, ordersData } = require('../controllers/orderController');
+const { createOrder, getAllOrders, getOrder, updateOrder, deleteOrder, completeOrder, OrdersData } = require('../controllers/orderController');
 const verifyToken = require('../middleware/verifyToken');
 const verifyRole = require('../middleware/verifyRole');
 const userRoles = require('../utils/userRoles');
@@ -125,7 +125,7 @@ router.get("/", verifyToken, verifyRole(userRoles.ADMIN), getAllOrders);
 
 router.get("/:orderId", verifyToken, verifyRole(userRoles.ADMIN), getOrder);
 
-router.get("/data", verifyToken, verifyRole(userRoles.ADMIN), ordersData);
+router.get("/Orders/data", verifyToken, verifyRole(userRoles.ADMIN), OrdersData);
 
 router.put("/:orderId", verifyToken, verifyRole(userRoles.ADMIN), updateOrder);
 
