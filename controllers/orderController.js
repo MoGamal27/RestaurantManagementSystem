@@ -7,6 +7,11 @@ const Exceljs = require('exceljs');
 const path = require('path');
 const fs = require('fs');
 
+// Check associations
+console.log('Orders associations:', orders.associations);
+console.log('Order Items associations:', order_items.associations);
+console.log('Menu Items associations:', Menu_items.associations);
+
 
 exports.createOrder = HandlerFactory.createOne(orders)
 
@@ -31,14 +36,9 @@ exports.getAllOrders = asyncHandler(async (req, res, next) => {
 
 exports.getOrder = asyncHandler(async (req, res, next) => {
     const { orderId } = req.params;
-    const order = await orders.findByPk(orderId, {
-        include: [
-            {
-                model: order_items,
-                include: [Menu_items]
-            }
-        ]
-    });
+
+    const order = await orders.findByPk(orderId);
+    
     if (!order) {
         return res.status(404).json({ message: 'Order not found' });
     }
@@ -77,23 +77,17 @@ exports.completeOrder = asyncHandler(async (req, res, next) => {
 
 
 
- exports.ordersData = asyncHandler(async (req, res, next) => {
+ exports.OrdersData = asyncHandler(async (req, res, next) => {
     const { startDate, endDate, type } = req.query;
 
-    const orderData = await orders.findAll({
+    const ordersData = await orders.findAll({
         where: {
-          createdAt: {
-            [Op.between]: [new Date(startDate), new Date(endDate)],
-          },
-        },
-        include: [
-            {
-                model: order_items,
-                as: 'order_item'
-            }
-        ]
-      });
-
+            createdAt: {
+                [Op.between]: [startDate, endDate]
+            },
+        }, 
+        
+    });
       const outputDir = path.join(__dirname, '../exports');
         
         
@@ -108,13 +102,15 @@ exports.completeOrder = asyncHandler(async (req, res, next) => {
           path: csvFilePath,
           header: [
             { id: 'orderId', title: 'Order ID' },
+            {id: 'total_amount', title: 'Total Amount' },
             { id: 'status', title: 'Status' },
             { id: 'createdAt', title: 'Created At' },
           ],
         });
   
-        const records = orderData.map((order) => ({
+        const records = ordersData.map((order) => ({
           orderId: order.id,
+          total_amount: order.total_amount,
           status: order.status,
           createdAt: order.createdAt,
         }));
@@ -131,12 +127,14 @@ exports.completeOrder = asyncHandler(async (req, res, next) => {
   
         worksheet.columns = [
           { header: 'Order ID', key: 'orderId', width: 10 },
+          { header: 'Total Amount', key: 'total_amount', width: 15 },
           { header: 'Status', key: 'status', width: 10 },
           { header: 'Created At', key: 'createdAt', width: 20 },
         ];
   
-        const records = orderData.map((order) => ({
+        const records = ordersData.map((order) => ({
           orderId: order.id,
+          total_amount: order.total_amount,
           status: order.status,
           createdAt: order.createdAt,
         }));
