@@ -1,24 +1,29 @@
-const { orders } = require('../models');
+const { orders, order_items, Menu_items } = require('../models')
 const HandlerFactory = require('./handlerFactory');
 const asyncHandler = require('express-async-handler');
+const { Op } = require('sequelize');
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const Exceljs = require('exceljs');
+const path = require('path');
+const fs = require('fs');
 
 
 exports.createOrder = HandlerFactory.createOne(orders)
 
 exports.getAllOrders = asyncHandler(async (req, res, next) => {
-    const orders = await orders.findAll({
+    const ordersData = await orders.findAll({
         include: [
             {
                 model: order_items,
-                include: [Menu_items]
+                as: 'order_item'
             }
         ]
     });
     res.status(200).json({
         status: 'success',
-        results: orders.length,
+        results: ordersData.length,
         data: {
-            orders
+            ordersData
         }
     });
 });
@@ -70,3 +75,79 @@ exports.completeOrder = asyncHandler(async (req, res, next) => {
 
     });
 
+
+
+ exports.ordersData = asyncHandler(async (req, res, next) => {
+    const { startDate, endDate, type } = req.query;
+
+    const orderData = await orders.findAll({
+        where: {
+          createdAt: {
+            [Op.between]: [new Date(startDate), new Date(endDate)],
+          },
+        },
+        include: [
+            {
+                model: order_items,
+                as: 'order_item'
+            }
+        ]
+      });
+
+      const outputDir = path.join(__dirname, '../exports');
+        
+        
+        if (!fs.existsSync(outputDir)) {
+            fs.mkdirSync(outputDir, { recursive: true });
+        }
+  
+      if (type === 'csv') {
+        // CSV Export
+        const csvFilePath = path.join(outputDir, 'orders.csv');
+        const csvWriter = createCsvWriter({
+          path: csvFilePath,
+          header: [
+            { id: 'orderId', title: 'Order ID' },
+            { id: 'status', title: 'Status' },
+            { id: 'createdAt', title: 'Created At' },
+          ],
+        });
+  
+        const records = orderData.map((order) => ({
+          orderId: order.id,
+          status: order.status,
+          createdAt: order.createdAt,
+        }));
+  
+        await csvWriter.writeRecords(records);
+        res.download(csvFilePath, 'orders.csv');
+       res.status(200).json({ message: 'CSV export completed' });
+
+    } else {
+        // Excel Export
+        const xlsxFilePath = path.join(outputDir, 'orders.xlsx');
+        const workbook = new Exceljs.Workbook();
+        const worksheet = workbook.addWorksheet('Orders');
+  
+        worksheet.columns = [
+          { header: 'Order ID', key: 'orderId', width: 10 },
+          { header: 'Status', key: 'status', width: 10 },
+          { header: 'Created At', key: 'createdAt', width: 20 },
+        ];
+  
+        const records = orderData.map((order) => ({
+          orderId: order.id,
+          status: order.status,
+          createdAt: order.createdAt,
+        }));
+
+        records.forEach((record) => {
+          worksheet.addRow(record);
+        });
+
+        await workbook.xlsx.writeFile(xlsxFilePath);
+         res.download(xlsxFilePath, 'orders.xlsx');
+        res.status(200).json({ message: 'Excel export completed' }); 
+       
+    } 
+ })   
