@@ -1,6 +1,52 @@
 'use strict';
 const { Model } = require('sequelize');
 
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    CreateUserInput:
+ *      type: object
+ *      required:
+ *        - email
+ *        - name
+ *        - password
+ *        - role
+ *      properties:
+ *        name:
+ *          type: string
+ *          default: mohamed
+ *        email:
+ *          type: string
+ *          default: mohamednn@gmail.com
+ *        password:
+ *          type: string
+ *          default: 12345678
+ *        role:
+ *          type: string
+ *          default: USER
+ */
+
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    LoginUserInput:
+ *      type: object
+ *      required:
+ *        - email
+ *        - password
+ *      properties:
+ *        email:
+ *          type: string
+ *          default: mohamednn@gmail.com
+ *        password:
+ *          type: string
+ *          default: 12345678
+ */
+
+ 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
@@ -47,7 +93,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       role: {
-        type: DataTypes.ENUM('ADMIN', 'STAFF', 'User'),
+        type: DataTypes.ENUM('ADMIN', 'STAFF', 'USER'),
         defaultValue: 'User',
       },
     },

@@ -2,6 +2,34 @@
 const {
   Model
 } = require('sequelize');
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    Menu_items:
+ *      type: object
+ *      required:
+ *        - name
+ *        - description
+ *        - price
+ *        - category_id
+ *      properties:
+ *        name:
+ *          type: string
+ *          default: Chicken Burger
+ *        description:
+ *          type: string
+ *          default: Grilled chicken with fresh vegetables
+ *        price:
+ *          type: integer
+ *          default: 150
+ *        category_id:
+ *          type: integer
+ *          default: 1
+ * 
+ */
+
 module.exports = (sequelize, DataTypes) => {
   class Menu_items extends Model {
     static associate(models) {

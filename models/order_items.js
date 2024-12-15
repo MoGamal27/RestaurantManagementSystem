@@ -2,6 +2,42 @@
 const {
   Model
 } = require('sequelize');
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    OrderItem:
+ *      type: object
+ *      required:
+ *        - quantity
+ *        - unit_price
+ *        - subtotal
+ *        - menu_item_id
+ *        - order_id
+ *      properties:
+ *        quantity:
+ *          type: integer
+ *          minimum: 1
+ *          description: Quantity of menu items
+ *        unit_price:
+ *          type: number
+ *          format: decimal
+ *          minimum: 0
+ *          description: Price per unit
+ *        subtotal:
+ *          type: number
+ *          format: decimal
+ *          minimum: 0
+ *          description: Total price for this item
+ *        menu_item_id:
+ *          type: integer
+ *          description: Reference to menu item
+ *        order_id:
+ *          type: integer
+ *          description: Reference to order
+ *
+ */ 
 module.exports = (sequelize, DataTypes) => {
   class order_items extends Model {
     static associate(models) {

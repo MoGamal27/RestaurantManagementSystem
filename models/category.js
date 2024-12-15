@@ -2,6 +2,26 @@
 const {
   Model
 } = require('sequelize');
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    Category:
+ *      type: object
+ *      required:
+ *        - title
+ *        - description
+ *      properties:
+ *        title:
+ *          type: string
+ *          default: Main Course
+ *        description:
+ *          type: string
+ *          default: Main dishes served as primary courses
+ */
+
+
 module.exports = (sequelize, DataTypes) => {
   class Category extends Model {
     static associate(models) {

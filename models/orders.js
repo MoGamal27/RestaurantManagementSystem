@@ -2,6 +2,31 @@
 const {
   Model
 } = require('sequelize');
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    Order:
+ *      type: object
+ *      required:
+ *        - total_amount
+ *        - user_id
+ *      properties:
+ *        status:
+ *          type: string
+ *          enum: [pending, completed, expired]
+ *          default: pending
+ *        total_amount:
+ *          type: integer
+ *          minimum: 0
+ *        user_id:
+ *          type: integer
+ *        createdAt:
+ *          type: string
+ *          format: date-time
+ *
+ */
 module.exports = (sequelize, DataTypes) => {
   class orders extends Model {
     static associate(models) {
