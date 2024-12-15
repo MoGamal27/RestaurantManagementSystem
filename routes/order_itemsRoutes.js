@@ -1,4 +1,4 @@
-const { addOrderItem, deleteOrderItem, topSellingItems } = require('../controllers/order_itemsCOntroller')
+const { addOrderItem, deleteOrderItem, topSellingItems } = require('../controllers/order_itemsController')
 const verifyToken = require('../middleware/verifyToken');
 const verifyRole = require('../middleware/verifyRole');
 const userRoles = require('../utils/userRoles');
