@@ -2,7 +2,7 @@ const { createMenu_items, getAllMenu_items, getMenu_items, updateMenu_items, del
 const verifyToken = require('../middleware/verifyToken');
 const verifyRole = require('../middleware/verifyRole');
 const userRoles = require('../utils/userRoles');
-const limiter = require('../middleware/rateLimiter');
+const limiter = require('../middleware/rateLimit');
 const { menu_itemsValidator } = require('../utils/validators/menu_itemsValidator');
 const router = require('express').Router();
 
