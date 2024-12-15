@@ -6,8 +6,8 @@ const { order_itemsValidator } = require('../utils/validators/order_itemsValidat
 const router = require('express').Router();
 
 
-router.post("/:orderId", order_itemsValidator, verifyToken, verifyRole(userRoles.ADMIN), addOrderItem);
+router.post("/:orderId", order_itemsValidator, verifyToken, verifyRole(userRoles.ADMIN, userRoles.STAFF), addOrderItem);
 
-router.delete("/:id", verifyToken, verifyRole(userRoles.ADMIN), deleteOrderItem);
+router.delete("/:id", verifyToken, verifyRole(userRoles.ADMIN, userRoles.STAFF), deleteOrderItem);
 
 module.exports = router
