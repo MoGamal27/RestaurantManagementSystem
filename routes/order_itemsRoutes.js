@@ -1,4 +1,4 @@
-const { addOrderItem, deleteOrderItem } = require('../controllers/order_itemsCOntroller')
+const { addOrderItem, deleteOrderItem, topSellingItems } = require('../controllers/order_itemsCOntroller')
 const verifyToken = require('../middleware/verifyToken');
 const verifyRole = require('../middleware/verifyRole');
 const userRoles = require('../utils/userRoles');
@@ -55,6 +55,8 @@ const router = require('express').Router();
  */
 
 router.post("/:orderId", order_itemsValidator, verifyToken, verifyRole(userRoles.ADMIN, userRoles.STAFF), addOrderItem);
+
+router.get("/top-selling-items", verifyToken, verifyRole(userRoles.ADMIN) ,topSellingItems);
 
 router.delete("/:id", verifyToken, verifyRole(userRoles.ADMIN, userRoles.STAFF), deleteOrderItem);
 
