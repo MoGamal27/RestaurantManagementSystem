@@ -6,7 +6,7 @@ const { orderValidator } = require('../utils/validators/orderValidator');
 const router = require('express').Router();
 
 
-router.post("/", orderValidator, verifyToken, verifyRole(userRoles.ADMIN), createOrder);
+router.post("/", orderValidator, verifyToken, verifyRole(userRoles.ADMIN, userRoles.STAFF), createOrder);
 
 router.get("/", verifyToken, verifyRole(userRoles.ADMIN), getAllOrders);
 
@@ -16,6 +16,6 @@ router.put("/:orderId", verifyToken, verifyRole(userRoles.ADMIN), updateOrder);
 
 router.delete("/:orderId", verifyToken, verifyRole(userRoles.ADMIN), deleteOrder);
 
-router.put("/:orderId/complete", verifyToken, verifyRole(userRoles.ADMIN), completeOrder);
+router.put("/:orderId/complete", verifyToken, verifyRole(userRoles.ADMIN, userRoles.STAFF), completeOrder);
 
 module.exports = router
