@@ -7,12 +7,6 @@ const Exceljs = require('exceljs');
 const path = require('path');
 const fs = require('fs');
 
-// Check associations
-console.log('Orders associations:', orders.associations);
-console.log('Order Items associations:', order_items.associations);
-console.log('Menu Items associations:', Menu_items.associations);
-
-
 exports.createOrder = HandlerFactory.createOne(orders)
 
 exports.getAllOrders = asyncHandler(async (req, res, next) => {
