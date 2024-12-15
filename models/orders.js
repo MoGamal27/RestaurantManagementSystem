@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   orders.init({
     status: { 
       type: DataTypes.ENUM,
-      values: ['pending', 'completed', 'cancelled'],
+      values: ['pending', 'completed', 'expired'],
       defaultValue: 'pending',
     },   
     total_amount: { 
