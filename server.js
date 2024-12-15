@@ -5,6 +5,10 @@ const db = require('./models');
 const routes = require('./routes/index');
 const appError = require('./utils/appError');
 const globalError = require('./middleware/errorMiddleware');
+const cors = require("cors");
+const xss = require("xss-clean");
+const helmet = require("helmet");
+const hpp = require("hpp");
 const initializeCronJobs = require('./config/cronJobs')
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./utils/swagger')
@@ -13,6 +17,18 @@ const swaggerSpec = require('./utils/swagger')
 const app = express();
 
 app.use(express.json());
+
+// Security Headers (Helmet)
+app.use(helmet());
+
+// Prevent Http Param Pollution
+app.use(hpp());
+
+// Prevent XSS (Cross side scripting) attacks
+app.use(xss());
+
+// CORS Policy
+app.use(cors());
 
 
 
