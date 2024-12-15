@@ -58,6 +58,6 @@ router.post("/:orderId", order_itemsValidator, verifyToken, verifyRole(userRoles
 
 router.get("/top-selling-items", verifyToken, verifyRole(userRoles.ADMIN) ,topSellingItems);
 
-router.delete("/:id", verifyToken, verifyRole(userRoles.ADMIN, userRoles.STAFF), deleteOrderItem);
+router.delete("/:orderId/:orderItemId", verifyToken, verifyRole(userRoles.ADMIN, userRoles.STAFF), deleteOrderItem);
 
 module.exports = router
