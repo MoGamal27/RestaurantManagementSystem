@@ -7,8 +7,24 @@ const Exceljs = require('exceljs');
 const path = require('path');
 const fs = require('fs');
 
+/**
+ * @desc Create a new order
+ * @route POST /api/orders
+ * @access Admin and Staff
+ */
 exports.createOrder = HandlerFactory.createOne(orders)
 
+/**
+ * @desc Get all orders
+ * @route GET /api/orders
+ * @access Admin only
+ */ 
+
+/**
+ * @desc Get all orders
+ * @route GET /api/orders
+ * @access Admin only
+ */
 exports.getAllOrders = asyncHandler(async (req, res, next) => {
     const ordersData = await orders.findAll({
         include: [
@@ -28,6 +44,11 @@ exports.getAllOrders = asyncHandler(async (req, res, next) => {
 });
 
 
+/**
+ * @desc Get order by id
+ * @route GET /api/orders/:orderId
+ * @access Admin only
+ */
 exports.getOrder = asyncHandler(async (req, res, next) => {
     const { orderId } = req.params;
 
@@ -44,12 +65,27 @@ exports.getOrder = asyncHandler(async (req, res, next) => {
         });
     });
 
+ /**
+  * @desc Update order
+  * @route PUT /api/orders/:orderId
+  * @access Admin only
+  */ 
 exports.updateOrder = HandlerFactory.updateOne(orders);
 
+/**
+ * @desc Delete order
+ * @route DELETE /api/orders/:orderId
+ * @access Admin only
+ */
 exports.deleteOrder = HandlerFactory.deleteOne(orders);
 
 
-// mark order as completed
+/**
+ * @desc Complete order
+ * @route PUT /api/orders/:orderId/complete
+ * @access Admin and Staff
+ * @param { orderId } - The ID of the order to be completed
+ */ 
 exports.completeOrder = asyncHandler(async (req, res, next) => {
     const { orderId } = req.params;
 
@@ -71,6 +107,12 @@ exports.completeOrder = asyncHandler(async (req, res, next) => {
 
 
 
+/**
+ * @desc Get orders data
+ * @route GET /api/orders/data
+ * @param { startDate, endDate, type } - The start date, end date, and type of data to be exported
+ * @access Admin only
+ */
  exports.OrdersData = asyncHandler(async (req, res, next) => {
     const { startDate, endDate, type } = req.query;
 

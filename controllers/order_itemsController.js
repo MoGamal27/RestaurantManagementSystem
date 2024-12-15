@@ -7,6 +7,12 @@ const Exceljs = require('exceljs');
 const path = require('path');
 const fs = require('fs');
 
+
+/**
+ * @desc    Add order item to order
+ * @route   POST api/orders/:orderId/order_items
+ * @access  Admin & Staff
+ */
 exports.addOrderItem = asyncHandler(async (req, res, next) => {
     const { orderId } = req.params;
 
@@ -44,7 +50,13 @@ exports.addOrderItem = asyncHandler(async (req, res, next) => {
    
 });
 
-
+/**
+ * @desc    Delete order item from order
+ * @route   DELETE api/orders/:orderId/order_items/:orderItemId
+ * @access  Admin & Staff
+ * @param   orderId
+ * @param   orderItemId
+ */ 
 exports.deleteOrderItem = asyncHandler(async (req, res, next) => {
     const { orderId, orderItemId } = req.params;
 
@@ -62,7 +74,7 @@ exports.deleteOrderItem = asyncHandler(async (req, res, next) => {
     }
 
     await order.update({
-        totalAmount: order.totalAmount - orderItem.subtotal
+        totalAmount: order.total_amount - orderItem.subtotal
     });
 
     await orderItem.destroy();
@@ -73,7 +85,11 @@ exports.deleteOrderItem = asyncHandler(async (req, res, next) => {
 
 
 
-
+/**
+ * @desc    Get top selling items in the last 30 days
+ * @route   GET api/order_items/top-selling-items
+ * @access  Admin only
+ */
 exports.topSellingItems = asyncHandler(async (req, res, next) => {
         const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
     

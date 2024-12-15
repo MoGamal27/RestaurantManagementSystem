@@ -7,7 +7,13 @@ const sendEmail = require('../Services/emailService');
 const bcrypt = require('bcrypt');
 
 
-// send password reset link
+/**
+ * @desc    Reset Password
+ * @route   POST /api/auth/reset-password
+ * @access  Public
+ * @requires email
+ * @returns {link to reset password}
+ */
 exports.resetPassword = asyncHandler(async (req, res, next) => {
 
     const user = await User.findOne({ where:{ email: req.body.email} });
@@ -38,7 +44,12 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 
 })
 
-// Reset user password
+/**
+ * @desc    Reset Password
+ * @route   POST /api/auth/reset-password/:userId/:token
+ * @access  Public
+ * @requires password
+ */
 exports.resetUserPassword = asyncHandler(async (req, res, next) => {
 
     const user = await User.findByPk(req.params.userId);
