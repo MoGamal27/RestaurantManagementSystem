@@ -3,7 +3,7 @@ const express = require('express');
 const { PORT } = process.env;
 const db = require('./models');
 const routes = require('./routes/index');
-
+const initializeCronJobs = require('./config/cronJobs')
 const app = express();
 
 app.use(express.json());
@@ -15,6 +15,8 @@ db.sequelize.sync({alter: true})
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
       console.log('Database connected successfully');
+      // Initialize cron jobs
+      initializeCronJobs();
     });
   })
   .catch((err) => {
