@@ -29,7 +29,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
 
 exports.signIn = asyncHandler(async (req, res, next) => {
     
-        const user = await User.findOne({ email: req.body.email });
+        const user = await User.findOne({ where : {email: req.body.email }});
 
         if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
           return next(new appError('Incorrect email or password', 401));
